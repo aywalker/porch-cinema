@@ -1,9 +1,11 @@
 {
-  "name": "napoleon-doorbell",
+  "name": "porch-cinema",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": {"node": "^22 || ^24"},
+  "engines": {
+    "node": "^22 || ^24"
+  },
   "scripts": {
     "build": "node scripts/build-web.mjs",
     "test": "node --test",
@@ -15,6 +17,11 @@
     "background:stop": "node listener/manage-background.mjs stop",
     "background:start": "node listener/manage-background.mjs start"
   },
-  "dependencies": {"ring-client-api": "14.3.0"},
-  "overrides": {"@eneris/push-receiver": "4.4.0"}
+  "dependencies": {
+    "ring-client-api": "14.3.0"
+  },
+  "overrides": {
+    "@eneris/push-receiver": "4.4.0"
+  },
+  "description": "Movie-soundbite dashboard and local Ring speaker listener; bring your own audio and credentials."
 }

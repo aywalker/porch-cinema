@@ -1,6 +1,6 @@
-# Napoleon Dynamite Doorbell Club
+# Porch Cinema
 
-A private movie-soundbite dashboard and a local Ring speaker listener. Source code belongs in GitHub; authorization tokens, movie audio, and camera recordings do not.
+A movie-soundbite dashboard and local Ring speaker listener. This public repository shares the source code only. Ring authorization, movie audio, camera recordings, and private hosting configuration stay on each user’s own system.
 
 ## What currently works
 
@@ -61,6 +61,6 @@ Measure the final file with FFprobe and update the ignored `listener/clips.json`
 
 This repository starts with fresh Git history: it does not contain the previous deployment repository's embedded media or generated archives. `.gitignore` excludes secrets, runtime authorization, audio/video, logs, databases, dependencies, and builds. The pre-commit hook checks staged paths, binary files, common credential patterns, and large embedded payloads. This reduces mistakes; it is not a guarantee that every possible secret will be caught.
 
-Before every push, review `git diff --cached` and run `npm run check:privacy`. Keep the GitHub repository private. Share only sanitized errors. If a real credential is ever committed, revoke it; deleting it in a later commit is not sufficient.
+Before every push, review `git diff --cached` and run `npm run check:privacy`. This repository is intended for public source sharing; keep local media, authorization, and generated builds excluded. Share only sanitized errors. If a real credential is ever committed, revoke it; deleting it in a later commit is not sufficient.
 
 Run `npm test` for source/build checks. Tests do not connect to a real Ring device. Keep known device limitations in mind when changing the trigger mode or audio pipeline.
