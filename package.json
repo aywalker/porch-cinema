@@ -1,0 +1,20 @@
+{
+  "name": "napoleon-doorbell",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {"node": "^22 || ^24"},
+  "scripts": {
+    "build": "node scripts/build-web.mjs",
+    "test": "node --test",
+    "check:privacy": "node scripts/check-repository.mjs",
+    "prepare": "git config core.hooksPath .githooks",
+    "listener": "node listener/motion-runner.mjs",
+    "background:install": "node listener/install-background.mjs",
+    "background:status": "node listener/manage-background.mjs status",
+    "background:stop": "node listener/manage-background.mjs stop",
+    "background:start": "node listener/manage-background.mjs start"
+  },
+  "dependencies": {"ring-client-api": "14.3.0"},
+  "overrides": {"@eneris/push-receiver": "4.4.0"}
+}

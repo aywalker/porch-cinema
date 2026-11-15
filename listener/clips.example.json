@@ -1,0 +1,106 @@
+[
+  {
+    "id": "pigskin82",
+    "label": "Back in '82, I used to be able to throw a pigskin a quarter mile.",
+    "file": "clips/pigskin82.mp3",
+    "seconds": 7.512,
+    "spokenSeconds": 6.0,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "dumpbed",
+    "label": "Did you take a dump in your bed last night?",
+    "file": "clips/dumpbed.mp3",
+    "seconds": 4.56,
+    "spokenSeconds": 3.072,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "grandmacalled",
+    "label": "Grandma just called and said you're supposed to go home.",
+    "file": "clips/grandmacalled.mp3",
+    "seconds": 5.112,
+    "spokenSeconds": 3.624,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "footballmountains",
+    "label": "How much you wanna make a bet I can throw a football over them mountains?",
+    "file": "clips/footballmountains.mp3",
+    "seconds": 4.656,
+    "spokenSeconds": 3.144,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "deliciousbass",
+    "label": "I caught you a delicious bass.",
+    "file": "clips/deliciousbass.mp3",
+    "seconds": 3.432,
+    "spokenSeconds": 1.944,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "drinkingonepercent",
+    "label": "I see you're drinking 1%\u2026",
+    "file": "clips/drinkingonepercent.mp3",
+    "seconds": 12.312,
+    "spokenSeconds": 10.8,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "japanesescientists",
+    "label": "Last week, Japanese scientists\u2026",
+    "file": "clips/japanesescientists.mp3",
+    "seconds": 10.368,
+    "spokenSeconds": 8.856,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "pickmeup",
+    "label": "Can you bring me my chapstick?",
+    "file": "clips/pickmeup.mp3",
+    "seconds": 4.032,
+    "spokenSeconds": 2.544,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "eeatthefood",
+    "label": "Tina, you fat lard. Come get some dinner!",
+    "file": "clips/eeatthefood.mp3",
+    "seconds": 15.552,
+    "spokenSeconds": 14.064,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "getsomeham",
+    "label": "Tina, come get some ham.",
+    "file": "clips/getsomeham.mp3",
+    "seconds": 3.192,
+    "spokenSeconds": 1.68,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "mynunchucks",
+    "label": "I can't fit my nunchucks in there anymore.",
+    "file": "clips/mynunchucks.mp3",
+    "seconds": 12.624,
+    "spokenSeconds": 11.136,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "whattheflip",
+    "label": "What the flip was Grandma doing at the sand dunes?",
+    "file": "clips/whattheflip.mp3",
+    "seconds": 4.368,
+    "spokenSeconds": 2.856,
+    "tailSilenceSeconds": 1.5
+  },
+  {
+    "id": "withabowstaff",
+    "label": "I'm pretty good with a bo staff.",
+    "file": "clips/withabowstaff.mp3",
+    "seconds": 9.072,
+    "spokenSeconds": 7.584,
+    "tailSilenceSeconds": 1.5
+  }
+]

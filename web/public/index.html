@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Napoleon Dynamite · Doorbell Club</title>
+<link rel="stylesheet" href="/app.css">
+</head><body>
+<main class="shell">
+  <div class="top"><div><div class="eyebrow">PRESTON, IDAHO / DOORBELL CLUB</div><h1>NAPOLEON<br><span>DYNAMITE</span><small>DOORBELL CLUB</small></h1><p class="lede">Your front door. Some seriously great movie clips.</p></div><div class="state"><span class="pulse"></span><span id="stateLabel">READY TO RING</span></div></div>
+
+  <section class="grid">
+    <article class="panel hero"><div class="eyebrow">FRONT DOOR / GREAT SKILLS</div><div class="camera"><div class="door" aria-label="Vote for Pedro"><span>VOTE</span><span>FOR</span><strong>PEDRO</strong></div><p>YOUR DOORBELL HAS SKILLS.</p><div class="camera-caption">LIVE VIDEO NOT CONNECTED · PREVIEW MODE</div></div><button class="primary" id="simulate">🔔 Simulate a doorbell press</button><p class="small">Simulation plays the selected Napoleon clip in this browser. It does not trigger Echo or Ring.</p></article>
+    <article class="panel controls"><div class="eyebrow">THE NAPOLEON DYNAMITE COLLECTION</div><div id="clipControls"><h2>Pick your soundbite.</h2><label class="small" for="audioClip">13 clips from Napoleon Dynamite</label><select id="audioClip"></select><p class="small">Recorded audio plays in this browser. Echo and Ring clip playback are not connected.</p><button class="secondary" id="playClip">▶ Play selected clip</button><button class="secondary" id="stopClip">■ Stop</button><p class="small">Audio sources: The Sound Archive, Soundboard.com, Myinstants, and Clip.Cafe.</p></div><h2>Doorbell settings</h2><label class="switchrow"><span>Doorbell enabled</span><input type="checkbox" id="active"></label><label class="switchrow"><span>Enable indoor Echo</span><input type="checkbox" id="indoorEnabled"></label><div class="divider"></div><div class="small">Ring event cooldown: <b>25 seconds</b><br>Outdoor speaker: <b>experimental, not connected</b></div><button class="secondary" id="testAlexa">Test Alexa speaker</button></article>
+  </section>
+  <section class="grid output">
+    <article class="panel"><div class="eyebrow">INSIDE / ECHO SPEAKER</div><h2>Inside the house</h2><p class="quote" id="inside">Choose a Napoleon clip, then press Play selected clip.</p><button class="secondary" id="previewInside">▶ Preview in browser</button></article>
+    <article class="panel"><div class="eyebrow">OUTSIDE / RING SPEAKER</div><h2>At the front door <span class="mini">EXPERIMENTAL</span></h2><p class="quote" id="outside">Original Napoleon Dynamite movie audio.</p><button class="secondary" id="previewOutside">▶ Preview in browser</button></article>
+  </section>
+  <article class="panel activity"><div class="eyebrow">THE DOORBELL DIARIES</div><h2>What happened?</h2><p class="small" id="statusMsg">Pick a clip and give it a try.</p><div id="history"></div></article>
+
+  <footer>NAPOLEON DYNAMITE / DOORBELL CLUB · MOVIE CLIPS ONLY</footer>
+</main>
+<script type="module" src="/app.js"></script>
+<p class="hosting-note">Private movie-clip collection. Settings and activity reset when the server restarts. Echo and Ring playback still need connecting.</p></body></html>

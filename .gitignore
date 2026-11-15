@@ -1,0 +1,40 @@
+# Credentials, local authorization and private configuration
+.env
+.env.*
+!.env.example
+**/.ring-token*
+**/*refresh-token*
+**/credentials*.json
+**/secrets.*
+**/auth.json
+*.pem
+*.key
+*.p12
+*.pfx
+# Private movie audio, recordings, archives and build outputs
+private/
+listener/clips/
+listener/clips.json
+*.mp3
+*.wav
+*.m4a
+*.mp4
+*.mov
+*.webm
+*.zip
+*.tar
+*.tgz
+dist/
+web/generated-assets.mjs
+.openai/
+# Runtime data and dependencies
+node_modules/
+*.log
+*.jsonl
+*.sqlite*
+*.db
+logs/
+recordings/
+backups/
+.DS_Store
+coverage/
