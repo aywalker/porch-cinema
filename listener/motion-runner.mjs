@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync, renameSync, existsSync, appendFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { selectConversation, prepareConversation } from './conversation.mjs';
 import { fileURLToPath } from 'node:url';
 import { execFileSync, spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
@@ -16,7 +17,7 @@ let ring, camera, session, busy = false, muted = false, stopping = false;
 let lastClip = '', audioError = '', token = '';
 let activeAbort;
 const chimePauseMs = 2000;
-const triggerMode=process.env.NAPOLEON_TRIGGER_MODE || 'motion-and-button';
+const triggerMode=process.env.NAPOLEON_TRIGGER_MODE || 'motion-priority';
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 function report(message) { console.log(`[${new Date().toLocaleTimeString()}] ${message}`); }
 function safeMessage(error) {
@@ -79,7 +80,7 @@ async function play(clip,signal,notBefore=0) {
     finished.catch(()=>{});
     report(`Sending movie clip: ${clip.label}`);
     const audioStartedAt=Date.now();
-    await active.transcodeReturnAudio({input:[join(root,clip.file)]});
+    await active.transcodeReturnAudio({input:[resolve(root,clip.file)]});
     await finished;
     checkAbort(signal);
     if(audioError)throw new Error(audioError);
@@ -96,31 +97,37 @@ async function play(clip,signal,notBefore=0) {
   }
 }
 async function drain() {
-  if(busy || stopping) return;
+  if(busy || stopping)return;
   busy=true;
   try {
     while(queue.length && !muted && !stopping) {
-      const event=queue.shift();
-      const options=clips.filter(c=>c.id!==lastClip);
-      const clip=options[Math.floor(Math.random()*options.length)] || clips[0];
-      lastClip=clip.id;
-      activeAbort=new AbortController();
+      const event=queue.shift();let prepared;
+      const conversation=triggerMode==='motion-priority' && event.eventType==='motion';
+      let clip;
       try {
+        if(conversation) {
+          const selected=selectConversation(clips,lastClip,3);
+          prepared=prepareConversation(selected,root);clip=prepared.clip;
+          lastClip=selected.at(-1).id;
+          report(`Motion conversation: ${selected.length} complete random clips in one audio session.`);
+        } else {
+          const options=clips.filter(c=>c.id!==lastClip);
+          clip=options[Math.floor(Math.random()*options.length)] || clips[0];lastClip=clip.id;
+        }
+        activeAbort=new AbortController();
         try {await play(clip,activeAbort.signal,event.notBefore || 0);}
         catch(error) {
           if(error.code!=='EARLY_AUDIO_END')throw error;
-          report(error.message+' Reconnecting and retrying this clip once.');
+          report(error.message+' Reconnecting and retrying this audio once.');
           record({type:'audio-retry',clipId:clip.id,message:error.message});
-          await pause(1000,activeAbort.signal);
-          await play(clip,activeAbort.signal);
+          await pause(1000,activeAbort.signal);await play(clip,activeAbort.signal);
         }
       } catch(error) {
-        if(error.name==='AbortError'){report('Previous playback cancelled.');continue;}
-        report('Playback failed: '+safeMessage(error));
-        record({type:'playback-error',clipId:clip.id,message:safeMessage(error)});
+        if(error.name==='AbortError')report('Previous playback cancelled.');
+        else {report('Playback failed: '+safeMessage(error));record({type:'playback-error',clipId:clip?.id,message:safeMessage(error)});}
         session?.stop();session=null;
-      }
-      if(queue.length && queue[0].eventType!=='doorbell') await sleep(1000);
+      } finally {prepared?.cleanup();}
+      if(queue.length && queue[0].eventType!=='doorbell')await sleep(1000);
     }
   } finally {busy=false;}
 }
@@ -128,6 +135,11 @@ function enqueue(eventId,manual=false,eventType='motion') {
   if(muted || stopping) return;
   if(!manual && seen.has(eventId)) return;
   if(!manual) {seen.add(eventId);if(seen.size>1000)seen.delete(seen.values().next().value);}
+  if(triggerMode==='motion-priority' && busy) {
+    record({type:'event-during-conversation',eventType,eventId});
+    report(eventType==='doorbell'?'Doorbell received during active conversation — continuing motion audio.':'Motion received during active conversation — already talking; not adding another session.');
+    return;
+  }
   if(eventType==='doorbell') {
     queue.length=0;
     activeAbort?.abort();session?.stop();
@@ -167,12 +179,12 @@ try {
     const category=notification.android_config?.category;
     report('Received Ring event category: '+String(category));
     const eventType=category===PushNotificationAction.Motion?'motion':category===PushNotificationAction.Ding?'doorbell':null;
-    if(!eventType || (eventType==='motion' && triggerMode!=='motion-and-button'))return;
+    if(!eventType || (eventType==='motion' && triggerMode==='button-only'))return;
     const id=notification.data?.event?.ding?.id;
     if(id!=null)enqueue(eventType+':'+String(id),false,eventType);
   });
   report(`Connected to Front Door. ${clips.length} Napoleon Dynamite clips ready.`);
-  report(triggerMode==='motion-and-button'?'EXPERIMENTAL: motion and button playback enabled. Live calls may suppress button events.':'BUTTON-ONLY MODE: each received doorbell press plays a random clip after a pause for the native chime.');
+  report(triggerMode==='motion-priority'?'MOTION PRIORITY ON: three random clips per motion visit, in one continuous session. Button presses do not interrupt.':triggerMode==='motion-and-button'?'EXPERIMENTAL: motion and button playback enabled. Live calls may suppress button events.':'BUTTON-ONLY MODE: each received doorbell press plays a random clip after a pause for the native chime.');
   if(process.env.NAPOLEON_BACKGROUND === '1') {
     const awake=spawn('/usr/bin/caffeinate',['-i','-w',String(process.pid)],{stdio:'ignore'});
     awake.on('error',()=>report('Could not prevent idle sleep. Check your Mac sleep settings.'));

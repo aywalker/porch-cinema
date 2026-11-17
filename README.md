@@ -7,11 +7,13 @@ A movie-soundbite dashboard and local Ring speaker listener. This public reposit
 - Private web dashboard with thirteen Napoleon Dynamite clip choices and browser preview.
 - Direct outdoor playback through a Ring Doorbell (2nd Gen), manually verified.
 - Button playback: native chime, then a random movie clip.
-- Motion playback: queues random clips sequentially. Received button events interrupt and take priority.
+- Motion-priority playback: three complete random clips are rendered as one audio playlist and sent through one live-talk session. Motion and button events during that conversation do not interrupt or queue more sessions. An idle button still triggers a single clip.
 - Optional Mac login startup, automatic restart, and idle-sleep prevention.
 - Audio-only MP3 preparation, trailing silence, and one retry for early audio-session termination.
 
-Both motion and button triggers are enabled by default, as requested. Motion queues a random clip; a received button event interrupts current playback, clears the queue and takes priority after a pause for the native chime. This is best-effort: motion playback opens a live Ring audio session, which can suppress new button events on the tested model. Priority logic cannot act on events Ring does not deliver. Wireless audio gaps remain unresolved. Full audible playback is not guaranteed by a completed send log.
+Motion-priority is the default. Each motion event received while idle starts a bounded three-clip conversation, using the existing silent tails as pauses. The playlist contains complete clips and does not cut them at an arbitrary session duration. More motion/button events during playback are acknowledged but do not extend or interrupt it; after it finishes, a new motion event can start a new conversation. This is not presence detection and cannot determine when someone leaves. Ring may suppress new events during live talk or remain busy briefly after it closes. Multi-clip playback uses the already-tested audio path but still needs an audible test on the physical doorbell. Wireless audio gaps remain unresolved. A completed transmission does not guarantee that every word was audible.
+
+Set `NAPOLEON_TRIGGER_MODE=button-only` for button-only foreground playback, or `motion-and-button` for the older experimental button-priority behavior.
 
 Live video, a recorded-video timeline, persistent hosted settings, and browser controls for the local background service are not implemented. This listener talks directly to Ring; the Home Assistant VM is not required for it.
 
@@ -66,4 +68,4 @@ Before every push, review `git diff --cached` and run `npm run check:privacy`. T
 
 Run `npm test` for source/build checks. Tests do not connect to a real Ring device. Keep known device limitations in mind when changing the trigger mode or audio pipeline.
 
-To opt into button-only mode for a foreground run, use `NAPOLEON_TRIGGER_MODE=button-only npm run listener`. The Mac background installer explicitly enables both triggers; rerun it after replacing the listener and installer to apply the change.
+To opt into button-only mode for a foreground run, use `NAPOLEON_TRIGGER_MODE=button-only npm run listener`. The Mac background installer explicitly enables motion-priority. Replace motion-runner.mjs, conversation.mjs and install-background.mjs together, then rerun the installer.

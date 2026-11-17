@@ -21,7 +21,7 @@ test('web build preserves flat Napoleon-only choices and serves private supplied
   const audio=await app.fetch(new Request('https://test/audio/'+clips[0].id+'.mp3'),{});assert.equal(audio.status,200);assert.equal(await audio.text(),'test-only-audio');
  } finally{rmSync(dir,{recursive:true,force:true});}
 });
-test('listener defaults to both triggers and retains early-audio recovery',()=>{
- const code=readFileSync(join(root,'listener','motion-runner.mjs'),'utf8');assert.match(code,/NAPOLEON_TRIGGER_MODE \|\| 'motion-and-button'/);assert.match(code,/eventType==='motion' && triggerMode!=='motion-and-button'/);assert.match(code,/EARLY_AUDIO_END/);
- const installer=readFileSync(join(root,'listener','install-background.mjs'),'utf8');assert.match(installer,/<key>NAPOLEON_TRIGGER_MODE<\/key><string>motion-and-button<\/string>/);
+test('listener defaults to motion-priority conversations and retains early-audio recovery',()=>{
+ const code=readFileSync(join(root,'listener','motion-runner.mjs'),'utf8');assert.match(code,/NAPOLEON_TRIGGER_MODE \|\| 'motion-priority'/);assert.match(code,/eventType==='motion' && triggerMode==='button-only'/);assert.match(code,/EARLY_AUDIO_END/);
+ const installer=readFileSync(join(root,'listener','install-background.mjs'),'utf8');assert.match(installer,/<key>NAPOLEON_TRIGGER_MODE<\/key><string>motion-priority<\/string>/);
 });

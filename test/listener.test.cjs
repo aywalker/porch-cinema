@@ -7,9 +7,9 @@ class FakeRing {onRefreshTokenUpdated=new Signal();async getCameras(){return [ca
 let code=fs.readFileSync(require('path').join(__dirname,'..','listener','motion-runner.mjs'),'utf8').replace(/^import .*;\n/gm,'').replaceAll('import.meta.url',JSON.stringify(require('url').pathToFileURL(require('path').join(__dirname,'..','listener','motion-runner.mjs')).href));
 const read=(path,encoding)=>path.endsWith('.ring-token')?'a'.repeat(120):path.endsWith('clips.json')?JSON.stringify(JSON.parse(fs.readFileSync(require('path').join(__dirname,'..','listener','clips.example.json'),'utf8')).map(c=>({...c,spokenSeconds:0.001}))):fs.readFileSync(path,encoding);
 const proc={env:{NAPOLEON_TRIGGER_MODE: "motion-and-button"},stdin:{},stdout:{},on(){},exit(code){throw Error('Unexpected exit '+code)}};
-const fn=new AsyncFunction('readFileSync','writeFileSync','renameSync','existsSync','appendFileSync','dirname','join','fileURLToPath','execFileSync','spawn','createInterface','RingApi','PushNotificationAction','setFfmpegPath','useLogger','process','console','setTimeout','clearTimeout',code);
+const fn=new AsyncFunction('readFileSync','writeFileSync','renameSync','existsSync','appendFileSync','dirname','join','resolve','fileURLToPath','execFileSync','spawn','createInterface','RingApi','PushNotificationAction','setFfmpegPath','useLogger','process','console','setTimeout','clearTimeout',code);
 (async()=>{
- await fn(read,()=>{},()=>{},()=>true,()=>{},require('path').dirname,require('path').join,require('url').fileURLToPath,()=>'/usr/bin/ffmpeg',()=>{},()=>terminal,FakeRing,{Motion:'motion',Ding:'ding'},()=>{},()=>{},proc,{log:s=>logs.push(s)},(fn,ms)=>setTimeout(fn,Math.min(ms,40)),clearTimeout);
+ await fn(read,()=>{},()=>{},()=>true,()=>{},require('path').dirname,require('path').join,require('path').resolve,require('url').fileURLToPath,()=>'/usr/bin/ffmpeg',()=>{},()=>terminal,FakeRing,{Motion:'motion',Ding:'ding'},()=>{},()=>{},proc,{log:s=>logs.push(s)},(fn,ms)=>setTimeout(fn,Math.min(ms,40)),clearTimeout);
  const event=id=>({android_config:{category:'motion'},data:{event:{ding:{id}}}});
  motion.emit(event('one'));motion.emit(event('one'));motion.emit(event('two'));
  await new Promise(r=>setTimeout(r,160));assert.equal(plays,2);assert.equal(maxConcurrent,1);

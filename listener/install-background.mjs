@@ -22,7 +22,7 @@ try {
  if(initialToken.length<100 || /\s/.test(initialToken))throw new Error('Your saved Ring token does not look valid.');
  const moduleSource=existsSync(join(target,'node_modules','ring-client-api'))?null:[join(source,'..','node_modules'),join(previous,'node_modules')].find(p=>existsSync(join(p,'ring-client-api')));
  if(!existsSync(join(target,'node_modules','ring-client-api')) && !moduleSource)throw new Error('The installed Ring library was not found in Documents/napoleon-doorbell.');
- for(const file of ['motion-runner.mjs','clips.json','clips'])if(!existsSync(join(source,file)))throw new Error('Unzip the full download before running this installer. Missing: '+file);
+ for(const file of ['motion-runner.mjs','conversation.mjs','clips.json','clips'])if(!existsSync(join(source,file)))throw new Error('Unzip the full download before running this installer. Missing: '+file);
  execFileSync('which',['ffmpeg'],{stdio:'ignore'});
  console.log('Stopping any previous background listener…');
  spawnSync('/bin/launchctl',['bootout',domain+'/'+label],{stdio:'ignore'});
@@ -31,7 +31,7 @@ try {
  // The service lives outside Documents so login startup does not rely on Terminal folder permissions.
  const latestToken=readFileSync(tokenSource,'utf8').trim();
  writeFileSync(join(target,'.ring-token'),latestToken,{mode:0o600});chmodSync(join(target,'.ring-token'),0o600);
- for(const file of ['motion-runner.mjs','clips.json','clips'])cpSync(join(source,file),join(target,file),{recursive:true});
+ for(const file of ['motion-runner.mjs','conversation.mjs','clips.json','clips'])cpSync(join(source,file),join(target,file),{recursive:true});
  if(moduleSource){console.log('Copying your installed Ring library…');cpSync(moduleSource,join(target,'node_modules'),{recursive:true});}
  const node=execFileSync('which',['node'],{encoding:'utf8'}).trim();
  const path=dirname(node)+':/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin';
@@ -41,7 +41,7 @@ try {
 <key>Label</key><string>${label}</string>
 <key>ProgramArguments</key><array><string>${xml(node)}</string><string>${xml(join(target,'motion-runner.mjs'))}</string></array>
 <key>WorkingDirectory</key><string>${xml(target)}</string>
-<key>EnvironmentVariables</key><dict><key>PATH</key><string>${xml(path)}</string><key>NAPOLEON_BACKGROUND</key><string>1</string><key>NAPOLEON_TRIGGER_MODE</key><string>motion-and-button</string></dict>
+<key>EnvironmentVariables</key><dict><key>PATH</key><string>${xml(path)}</string><key>NAPOLEON_BACKGROUND</key><string>1</string><key>NAPOLEON_TRIGGER_MODE</key><string>motion-priority</string></dict>
 <key>RunAtLoad</key><true/><key>KeepAlive</key><true/><key>ThrottleInterval</key><integer>30</integer>
 <key>ProcessType</key><string>Background</string><key>ExitTimeOut</key><integer>15</integer>
 <key>StandardOutPath</key><string>${xml(join(logs,'listener.log'))}</string>
