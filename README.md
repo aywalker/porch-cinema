@@ -6,11 +6,12 @@ A movie-soundbite dashboard and local Ring speaker listener. This public reposit
 
 - Private web dashboard with thirteen Napoleon Dynamite clip choices and browser preview.
 - Direct outdoor playback through a Ring Doorbell (2nd Gen), manually verified.
-- Button-only playback: native chime, then a random movie clip.
+- Button playback: native chime, then a random movie clip.
+- Motion playback: queues random clips sequentially. Received button events interrupt and take priority.
 - Optional Mac login startup, automatic restart, and idle-sleep prevention.
 - Audio-only MP3 preparation, trailing silence, and one retry for early audio-session termination.
 
-Button-only is the default. Experimental motion playback opens a live Ring audio session, which can suppress new button events on the tested model. Priority logic cannot act on events Ring does not deliver. Wireless audio gaps remain unresolved. Full audible playback is not guaranteed by a completed send log.
+Both motion and button triggers are enabled by default, as requested. Motion queues a random clip; a received button event interrupts current playback, clears the queue and takes priority after a pause for the native chime. This is best-effort: motion playback opens a live Ring audio session, which can suppress new button events on the tested model. Priority logic cannot act on events Ring does not deliver. Wireless audio gaps remain unresolved. Full audible playback is not guaranteed by a completed send log.
 
 Live video, a recorded-video timeline, persistent hosted settings, and browser controls for the local background service are not implemented. This listener talks directly to Ring; the Home Assistant VM is not required for it.
 
@@ -64,3 +65,5 @@ This repository starts with fresh Git history: it does not contain the previous 
 Before every push, review `git diff --cached` and run `npm run check:privacy`. This repository is intended for public source sharing; keep local media, authorization, and generated builds excluded. Share only sanitized errors. If a real credential is ever committed, revoke it; deleting it in a later commit is not sufficient.
 
 Run `npm test` for source/build checks. Tests do not connect to a real Ring device. Keep known device limitations in mind when changing the trigger mode or audio pipeline.
+
+To opt into button-only mode for a foreground run, use `NAPOLEON_TRIGGER_MODE=button-only npm run listener`. The Mac background installer explicitly enables both triggers; rerun it after replacing the listener and installer to apply the change.

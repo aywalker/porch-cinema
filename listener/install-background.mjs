@@ -41,7 +41,7 @@ try {
 <key>Label</key><string>${label}</string>
 <key>ProgramArguments</key><array><string>${xml(node)}</string><string>${xml(join(target,'motion-runner.mjs'))}</string></array>
 <key>WorkingDirectory</key><string>${xml(target)}</string>
-<key>EnvironmentVariables</key><dict><key>PATH</key><string>${xml(path)}</string><key>NAPOLEON_BACKGROUND</key><string>1</string><key>NAPOLEON_TRIGGER_MODE</key><string>button-only</string></dict>
+<key>EnvironmentVariables</key><dict><key>PATH</key><string>${xml(path)}</string><key>NAPOLEON_BACKGROUND</key><string>1</string><key>NAPOLEON_TRIGGER_MODE</key><string>motion-and-button</string></dict>
 <key>RunAtLoad</key><true/><key>KeepAlive</key><true/><key>ThrottleInterval</key><integer>30</integer>
 <key>ProcessType</key><string>Background</string><key>ExitTimeOut</key><integer>15</integer>
 <key>StandardOutPath</key><string>${xml(join(logs,'listener.log'))}</string>

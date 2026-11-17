@@ -16,7 +16,7 @@ let ring, camera, session, busy = false, muted = false, stopping = false;
 let lastClip = '', audioError = '', token = '';
 let activeAbort;
 const chimePauseMs = 2000;
-const triggerMode=process.env.NAPOLEON_TRIGGER_MODE || 'button-only';
+const triggerMode=process.env.NAPOLEON_TRIGGER_MODE || 'motion-and-button';
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 function report(message) { console.log(`[${new Date().toLocaleTimeString()}] ${message}`); }
 function safeMessage(error) {
